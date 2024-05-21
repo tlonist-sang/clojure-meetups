@@ -27,16 +27,25 @@
 
   ;; class/static-methods
   ;; class/.instance-methods
-  ;; class/constructor
+  ;; class/constructor 
 
-  (map Math/abs [-1 -2 -3])
-  (map String/.toUpperCase ["a" "b" "c"])
+  ;; works on 1.11.x
+  (map #(.toUpperCase %) ["a" "b" "c"])
+  (map #(java.time.Instant/parse %) ["2024-01-01T00:00:00Z" "2024-01-01T00:00:00Z"])
+  
+  ;; works only on 1.12.0-alpha10
+  (map String/.toUpperCase ["a" "b" "c"]) 
+  (map Integer/parseInt ["1" "2" "3"])  
   (map String/new ["1" "2" "3"])
+  (map java.time.Instant/parse ["2024-01-01T00:00:00Z" "2024-01-01T00:00:00Z"])
 
   ;; 2. param tags metadata
   ;; https://clojure.atlassian.net/browse/CLJ-2805
   ;; param tags can resolve overloaded methods (class/method)
-
+  (^[String] java.net.URI/new "http://localhost")
+  (^[long] java.net.URI/new "http://localhost") ;; Error - param-tags [long] insufficient to resolve constructor in class java.net.URI
+  (java.net.URI/new "http://localhost")
+  
   ;; 3. Array class syntax
   ;; before this version,
   ;; [[D for 2-dim primitive doubles
@@ -48,8 +57,9 @@
   (def string-array (into-array String ["hello" "world"]))
 
   ;; Print the class type of the arrays
-  (println "Double array type:" (.getClass double-array))
-  (println "String array type:" (.getClass string-array))
+  (println "Double array type:" (.getClass double-array)) ;; Double array type: [[D
+  (println "String array type:" (.getClass string-array)) ;; String array type: [Ljava.lang.String;
+
   :rcf)
 
 (comment
