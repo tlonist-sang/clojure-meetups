@@ -32,10 +32,10 @@
   ;; works on 1.11.x
   (map #(.toUpperCase %) ["a" "b" "c"])
   (map #(java.time.Instant/parse %) ["2024-01-01T00:00:00Z" "2024-01-01T00:00:00Z"])
-  
+
   ;; works only on 1.12.0-alpha10
-  (map String/.toUpperCase ["a" "b" "c"]) 
-  (map Integer/parseInt ["1" "2" "3"])  
+  (map String/.toUpperCase ["a" "b" "c"])
+  (map Integer/parseInt ["1" "2" "3"])
   (map String/new ["1" "2" "3"])
   (map java.time.Instant/parse ["2024-01-01T00:00:00Z" "2024-01-01T00:00:00Z"])
 
@@ -45,7 +45,7 @@
   (^[String] java.net.URI/new "http://localhost")
   (^[long] java.net.URI/new "http://localhost") ;; Error - param-tags [long] insufficient to resolve constructor in class java.net.URI
   (java.net.URI/new "http://localhost")
-  
+
   ;; 3. Array class syntax
   ;; before this version,
   ;; [[D for 2-dim primitive doubles
@@ -59,6 +59,17 @@
   ;; Print the class type of the arrays
   (println "Double array type:" (.getClass double-array)) ;; Double array type: [[D
   (println "String array type:" (.getClass string-array)) ;; String array type: [Ljava.lang.String;
+
+
+
+
+  (->> (range 1 101)
+       (map (fn [n]
+              (cond-> nil
+                (zero? (mod n 3)) (str "Fizz")
+                (zero? (mod n 5)) (str "Buzz")
+                (zero? (mod n 7)) (str "Pazz")
+                :else (or (str n))))))
 
   :rcf)
 

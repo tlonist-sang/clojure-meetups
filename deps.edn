@@ -2,8 +2,12 @@
  :deps {org.clojure/clojure
         #_{:mvn/version "1.11.2"}
         #_{:mvn/version "1.11.3"}
-        {:mvn/version "1.12.0-alpha11"}
-        com.constacts/ragtacts {:mvn/version "0.3.1"}}
+
+        
+        {:mvn/version "1.12.0-alpha12"}
+        #_
+        {:mvn/version "1.12.0-beta1"}
+        com.constacts/ragtacts {:mvn/version "0.3.8"}}
  :aliases {:splint {:extra-deps {io.github.noahtheduke/splint {:mvn/version "1.15.2"}
                                  org.clojure/clojure {:mvn/version "1.11.1"}}
                     :main-opts ["-m" "noahtheduke.splint"]}}}
