@@ -24,25 +24,17 @@
   ;; For “value suppliers” we instead found IDeref to be a semantic match for a value provider interface and in [CLJ-2792: Java Supplier interop
   ;; CLOSED] we extended IDeref to implement Supplier (and family).
 
+  ;; Solution
+  ;; support Supplier and other 0-arg FIs
+
   (import '(java.util.function Function Supplier))
   (import '(java.lang ThreadLocal))
-
-  ;; before => had to implement using reify
-    ;; This works (> version 1.12.0-alpha6)
-  (def function-example
-    (reify Function
-      (apply [this x] (str "Hello, " x "!"))))
-
-  (def function-example-new
-    (Function. #(str "Hello, " % "!")))
-  (.apply function-example "World")  ;=> "Hello, World!"
   
+  (defn get-value [] "Hello from ThreadLocal")
 
-  (def some-value "Hello from ThreadLocal")
-  (defn get-value [] some-value)
-
-  ;; before => Cannot cast clojure_meetup_4$get_value to java.util.function.Supplier
-  ;; after => IDeref was extended to support Supplier directly
+  
+  ;; 1.12.0-alpha12 => Cannot cast clojure_meetup_4$get_value to java.util.function.Supplier
+  ;; 1.12.0-beta1   => IDeref was extended to support Supplier directly
   (def thread-local (ThreadLocal/withInitial get-value))
   (.get thread-local)
 
@@ -52,16 +44,25 @@
   ;; ############################################################################################
   
   ;; Problem
-  
-
   ;; This would fail to compile or throw a runtime error
   ;; Because primitive returns are supported 'only' for arity 1-2
   ;; For arity 3-10, only boolean types or Object types are supported
   
-
-  ;; after => below compiles
-  ;; gives 60
+  ;; Solution
+  ;; For functions with arity>2, their return types can only be objects OR booleans.
+  (defn test-fn-1 [x]
+    (long x))
   
+  (defn test-fn-2 [x y]
+    (+ (long x) (long y)))
+  
+  (defn test-fn-3 [x y z]
+    (+ (long x) (long y) (long z)))
+  
+  (type (test-fn-1 1))
+  (type (test-fn-2 1 2))
+  (type (test-fn-3 1 2 3))
+
 
   ;; #############################################################################
   ;; # CLJ-2864 Stop using truthy return logic in FI adapters                    #
