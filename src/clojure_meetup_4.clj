@@ -23,10 +23,10 @@
   ;; FI adapting released in 1.12.0-alpha12 does not adapt 0-arg FIs such as Supplier, because 0 arg methods are not functional. 
   ;; For “value suppliers” we instead found IDeref to be a semantic match for a value provider interface and in [CLJ-2792: Java Supplier interop
   ;; CLOSED] we extended IDeref to implement Supplier (and family).
-
+  
   ;; Solution
   ;; support Supplier and other 0-arg FIs
-
+  
   (import '(java.util.function Function Supplier))
   (import '(java.lang ThreadLocal))
   
@@ -56,12 +56,13 @@
   (defn long-returning-fn [a b c]
     (+ (long a) (long b) (long c)))
 
-  (testing "Function with arity 3 and long return type"
-    (let [method (.getMethod (class long-returning-fn) "invoke" (into-array Class [Object Object Object]))
-          invoker (FnInvokers/getInvoker method)]
-      (is (= (class invoker) clojure.lang.FnInvokers))
-      (is (= (.getSimpleName (class invoker)) "InvokeOOOO"))  ; This is the key test
-      (is (= 6 (invoker long-returning-fn 1 2 3)))))
+  
+  (let [method (.getMethod (class long-returning-fn) "invoke" (into-array Class [Object Object Object]))]
+          ;invoker (FnInvokers/getInvoker method)]
+    method
+    #_(is (= (class invoker) clojure.lang.FnInvokers))
+    #_(is (= (.getSimpleName (class invoker)) "InvokeOOOO"))  ; This is the key test
+    #_(is (= 6 (invoker long-returning-fn 1 2 3))))
 
 
   ;; #############################################################################
@@ -112,7 +113,7 @@
   
   ;; before =>
   ;; 
-
+  
   ;; after =>
   ;; {:tag :ret, :val "nil", :ns "user", :ms 10, :form "(binding [*out* *err*] (flush))"}
   
@@ -159,5 +160,5 @@
   
   ;; Solution
   ;; Reuse the good docs already at https://clojure.org/reference/transients and enhance the docstring for transient which is the starting place for all of the transient ops.
-
+  
   :rcf)
