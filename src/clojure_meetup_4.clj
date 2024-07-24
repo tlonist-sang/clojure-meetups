@@ -56,13 +56,14 @@
   (defn long-returning-fn [a b c]
     (+ (long a) (long b) (long c)))
 
+  (defn get-return-type [f]
+    (let [class (class f)
+          methods (.getDeclaredMethods class)
+          invoke-method (first (filter #(= (.getName %) "invoke") methods))]
+      (.getReturnType invoke-method)))
   
-  (let [method (.getMethod (class long-returning-fn) "invoke" (into-array Class [Object Object Object]))]
-          ;invoker (FnInvokers/getInvoker method)]
-    method
-    #_(is (= (class invoker) clojure.lang.FnInvokers))
-    #_(is (= (.getSimpleName (class invoker)) "InvokeOOOO"))  ; This is the key test
-    #_(is (= 6 (invoker long-returning-fn 1 2 3))))
+  (get-return-type long-returning-fn)
+  
 
 
   ;; #############################################################################
