@@ -50,18 +50,18 @@
   
   ;; Solution
   ;; For functions with arity>2, their return types can only be objects OR booleans.
-  (defn test-fn-1 [x]
-    (long x))
-  
-  (defn test-fn-2 [x y]
-    (+ (long x) (long y)))
-  
-  (defn test-fn-3 [x y z]
-    (+ (long x) (long y) (long z)))
-  
-  (type (test-fn-1 1))
-  (type (test-fn-2 1 2))
-  (type (test-fn-3 1 2 3))
+  (require '[clojure.test :refer :all])
+  (import '(clojure.lang FnInvokers))
+
+  (defn long-returning-fn [a b c]
+    (+ (long a) (long b) (long c)))
+
+  (testing "Function with arity 3 and long return type"
+    (let [method (.getMethod (class long-returning-fn) "invoke" (into-array Class [Object Object Object]))
+          invoker (FnInvokers/getInvoker method)]
+      (is (= (class invoker) clojure.lang.FnInvokers))
+      (is (= (.getSimpleName (class invoker)) "InvokeOOOO"))  ; This is the key test
+      (is (= 6 (invoker long-returning-fn 1 2 3)))))
 
 
   ;; #############################################################################
