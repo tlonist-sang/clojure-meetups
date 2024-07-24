@@ -99,11 +99,15 @@
   ;; Problem
   ;; Solution
 
-  ;; Example
+  ;; clojure -X clojure.core.server/start-server :name prepl :port 5555 :accept clojure.core.server/io-prepl :server-daemon false
+  ;; nc localhost 5555
 
-  ;; before =>
-  ;; 
-
+  (set! *warn-on-reflection* true)
+  (.toString (identity "foo"))
+  (binding [*out* *err*] (flush))
+  (defn identity [x] x)
+  (binding [*out* *err*] (flush))
+  
   ;; after =>
   ;; {:tag :ret, :val "nil", :ns "user", :ms 10, :form "(binding [*out* *err*] (flush))"}
 
