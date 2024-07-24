@@ -126,11 +126,6 @@
   ;; before => 
   ;; Syntax error (ArrayIndexOutOfBoundsException) compiling fn* at (src/clojure_meetup_4.clj:105:3).
   ;; Because double takes 2 slots (8 bytes), whereas object takes 1 slot. Hence the mismatch.
-  (let [p (reify SomeProtocol)]
-    (min 0.0
-         (case :p1
-           :p1 (p1 p :foo)
-           :p2 (p2 p :foo))))
 
   ;; after =>
   ;; Receiver class clojure_meetup_4$eval8885$reify__8886 does not define or inherit an implementation of the resolved method 'abstract java.lang.Object p1(java.lang.Object)' of interface clojure_meetup_4.SomeProtocol.
