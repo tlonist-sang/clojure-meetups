@@ -15,11 +15,15 @@
   
 
   ;; ####################################################################################################
-  ;; #  CLJ-2859 Expand scope of FI ada pting to include Supplier (and other 0 arg FI)                  #
+  ;; #  CLJ-2859 Expand scope of FI adapting to include Supplier (and other 0 arg FI)                  #
   ;; #. FI = function interfaces, @FunctionalInterface. Interface with only one abstract method.        #
   ;; ####################################################################################################
   
   ;; Problem
+  ;; FI adapting released in 1.12.0-alpha12 does not adapt 0-arg FIs such as Supplier, because 0 arg methods are not functional. 
+  ;; For “value suppliers” we instead found IDeref to be a semantic match for a value provider interface and in [CLJ-2792: Java Supplier interop
+  ;; CLOSED] we extended IDeref to implement Supplier (and family).
+
   (import '(java.util.function Function Supplier))
   (import '(java.lang ThreadLocal))
 
