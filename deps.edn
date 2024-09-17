@@ -1,12 +1,14 @@
 {:paths ["src" "resources"]
- :deps {org.clojure/clojure
+ :deps {org.clojure/clojure 
         #_{:mvn/version "1.11.2"}
         #_{:mvn/version "1.11.3"}
 
         #_
         {:mvn/version "1.12.0-alpha12"}
         
-        {:mvn/version "1.12.0-beta1"}
+        {:mvn/version "1.12.0"}
+        #_
+        {:mvn/version "1.11.0"}
         com.constacts/ragtacts {:mvn/version "0.3.8"}}
  :aliases {:splint {:extra-deps {io.github.noahtheduke/splint {:mvn/version "1.15.2"}
                                  org.clojure/clojure {:mvn/version "1.11.1"}}
