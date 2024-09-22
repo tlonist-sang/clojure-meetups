@@ -2,6 +2,9 @@
   (:require [clojure.edn :as edn]
             [clojure.test :refer [deftest run-tests testing is]]))
 
+;; Below code is a concept.
+;; For the actual example, one needs to serialize/deserialize the edn-map to/from a string.
+
 (defn parse-edn-map [edn-str]
   (edn/read-string {:readers {'eg identity}} edn-str))
 
